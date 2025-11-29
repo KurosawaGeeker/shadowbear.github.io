@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>❤影子大王万岁❤</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --accent-1: #ff6fb7;
+      --accent-2: #ffa260;
+      --accent-3: #62d0ff;
+      --accent-4: #9eff8b;
+      --text-glow: rgba(255, 255, 255, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #1b1b35 0%, #080812 45%, #030306 100%);
+      overflow: hidden;
+      cursor: url("./cursor-small.png") 16 16, pointer;
+    }
+
+    .king-text {
+      text-align: center;
+      font-size: clamp(2.5rem, 6vw, 6rem);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: full-width;
+      color: #fff;
+      mix-blend-mode: screen;
+      text-shadow:
+        0 0 10px var(--text-glow),
+        0 0 20px var(--accent-2),
+        0 0 35px var(--accent-1);
+      animation: shimmer 5s linear infinite;
+    }
+
+    .king-text a {
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .king-text span {
+      background: linear-gradient(120deg, var(--accent-1), var(--accent-2), var(--accent-3), var(--accent-4));
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    @keyframes shimmer {
+      0% {
+        filter: hue-rotate(0deg);
+      }
+      100% {
+        filter: hue-rotate(360deg);
+      }
+    }
+
+    .floating {
+      position: absolute;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      pointer-events: none;
+      user-select: none;
+      text-shadow:
+        0 0 6px rgba(0, 0, 0, 0.4),
+        0 0 16px rgba(255, 255, 255, 0.6);
+      animation: floatUp 1.4s ease-out forwards;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.8);
+      }
+      10% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-120px) scale(0.9);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="king-text">
+  <a href="https://user.qzone.qq.com/12255678?loginfrom=2" target="_blank" rel="noopener noreferrer">
+      <span>❤影子大王万岁万岁万万岁❤</span>
+    </a>
+  </div>
+
+  <script>
+    const phrases = ["❤影子万岁❤"];
+
+    function randomColor() {
+      const hue = Math.floor(Math.random() * 360);
+      return `hsl(${hue}deg, 80%, 65%)`;
+    }
+
+    function spawnFloatingText(x, y) {
+      const el = document.createElement("div");
+      el.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+      el.className = "floating";
+      document.body.appendChild(el);
+
+      const rect = el.getBoundingClientRect();
+      el.style.left = `${x - rect.width / 2}px`;
+      el.style.top = `${y - rect.height / 2}px`;
+      el.style.color = randomColor();
+
+      el.addEventListener("animationend", () => el.remove());
+    }
+
+    document.addEventListener("click", (event) => {
+      spawnFloatingText(event.clientX, event.clientY);
+    });
+  </script>
+</body>
+</html>
+
