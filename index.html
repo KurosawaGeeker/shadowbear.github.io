@@ -401,6 +401,9 @@
     const musicBtn = document.getElementById("musicBtn");
     const bgm = document.getElementById("bgm");
 
+    bgm.src = encodeURI(track);
+    bgm.load();
+
     let unlocked = false;
     let photosBuilt = false;
 
@@ -433,9 +436,6 @@
     }
 
     function playMusic() {
-      if (!bgm.src) {
-        bgm.src = encodeURI(track);
-      }
       bgm.play().catch(() => {});
       setMusicLabel();
     }
@@ -497,6 +497,7 @@
       burst(event.clientX, event.clientY, 2);
     });
 
+    unlockBtn.addEventListener("pointerdown", unlock);
     unlockBtn.addEventListener("click", unlock);
     musicBtn.addEventListener("click", () => {
       if (bgm.paused) {
