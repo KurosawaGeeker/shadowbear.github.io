@@ -1,134 +1,431 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>❤影子大王万岁❤</title>
+  <title>影子熊大王万岁！</title>
   <style>
+    @import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Noto+Sans+SC:wght@500;700;900&display=swap");
+
     :root {
-      color-scheme: light dark;
-      --accent-1: #ff6fb7;
-      --accent-2: #ffa260;
-      --accent-3: #62d0ff;
-      --accent-4: #9eff8b;
-      --text-glow: rgba(255, 255, 255, 0.4);
+      --pink: #ff7ace;
+      --hot: #ff2d97;
+      --rose: #f4087b;
+      --bg0: #0c040f;
+      --bg1: #1c071b;
+      --line: rgba(255, 176, 224, 0.45);
+      --text: #ffe8f7;
+      --shadow: 0 0 26px rgba(255, 69, 176, 0.5);
     }
 
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
     }
 
     body {
-      min-height: 100vh;
-      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at top, #1b1b35 0%, #080812 45%, #030306 100%);
+      font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
       overflow: hidden;
-      cursor: url("pics/cursor-small.png") 16 16, pointer;
+      cursor: url("pics/cursor-small.png") 16 16, auto;
+      background:
+        radial-gradient(circle at 15% 8%, rgba(255, 98, 196, 0.3), transparent 34%),
+        radial-gradient(circle at 84% 16%, rgba(255, 60, 150, 0.24), transparent 36%),
+        radial-gradient(circle at 50% 92%, rgba(255, 145, 222, 0.2), transparent 40%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 65%, #050207);
     }
 
-    .king-text {
-      text-align: center;
-      font-size: clamp(2.5rem, 6vw, 6rem);
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: full-width;
-      color: #fff;
-      mix-blend-mode: screen;
-      text-shadow:
-        0 0 10px var(--text-glow),
-        0 0 20px var(--accent-2),
-        0 0 35px var(--accent-1);
-      animation: shimmer 5s linear infinite;
-    }
-
-    .king-text a {
-      display: inline-block;
-      text-decoration: none;
-    }
-
-    .king-text span {
-      background: linear-gradient(120deg, var(--accent-1), var(--accent-2), var(--accent-3), var(--accent-4));
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    @keyframes shimmer {
-      0% {
-        filter: hue-rotate(0deg);
-      }
-      100% {
-        filter: hue-rotate(360deg);
-      }
-    }
-
-    .floating {
-      position: absolute;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #fff;
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
       pointer-events: none;
-      user-select: none;
-      text-shadow:
-        0 0 6px rgba(0, 0, 0, 0.4),
-        0 0 16px rgba(255, 255, 255, 0.6);
-      animation: floatUp 1.4s ease-out forwards;
+      z-index: 2;
     }
 
-    @keyframes floatUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px) scale(0.8);
+    body::before {
+      background: repeating-linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.028) 0,
+        rgba(255, 255, 255, 0.028) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      mix-blend-mode: soft-light;
+      opacity: 0.65;
+    }
+
+    body::after {
+      background: radial-gradient(circle at center, transparent 45%, rgba(0, 0, 0, 0.62) 100%);
+    }
+
+    .photo-layer,
+    .fx-layer,
+    .petal-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.45s ease;
+    }
+
+    body.unlocked .photo-layer,
+    body.unlocked .fx-layer,
+    body.unlocked .petal-layer {
+      opacity: 1;
+    }
+
+    .photo {
+      position: absolute;
+      border: 1px solid rgba(255, 180, 228, 0.56);
+      border-radius: 12px;
+      overflow: hidden;
+      width: clamp(120px, 17vw, 250px);
+      aspect-ratio: 4 / 5;
+      box-shadow: 0 0 20px rgba(255, 67, 173, 0.34);
+      animation: drift var(--d, 8s) ease-in-out infinite;
+      opacity: 0.82;
+      filter: saturate(1.12) contrast(1.06);
+      transform: rotate(var(--r, -3deg));
+      background: rgba(20, 6, 18, 0.55);
+    }
+
+    .photo::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @keyframes drift {
+      50% {
+        transform: translateY(-10px) rotate(calc(var(--r) * -1));
       }
-      10% {
+    }
+
+    .petal {
+      position: absolute;
+      top: 103vh;
+      color: rgba(255, 144, 216, 0.86);
+      font-size: clamp(15px, 2.4vw, 30px);
+      text-shadow: 0 0 12px rgba(255, 82, 177, 0.76);
+      animation: rise linear forwards;
+      user-select: none;
+    }
+
+    @keyframes rise {
+      to {
+        transform: translateY(-125vh) rotate(28deg);
+        opacity: 0;
+      }
+    }
+
+    .spark {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff 0, #ff77c7 56%, transparent 64%);
+      filter: drop-shadow(0 0 8px #ff4bb8);
+      animation: sparkOut 0.86s ease-out forwards;
+    }
+
+    @keyframes sparkOut {
+      0% {
+        transform: scale(0.3);
+        opacity: 0;
+      }
+      20% {
         opacity: 1;
-        transform: translateY(0) scale(1);
       }
       100% {
+        transform: translateY(-28px) scale(1.25);
         opacity: 0;
-        transform: translateY(-120px) scale(0.9);
+      }
+    }
+
+    .gate {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 30;
+      background: radial-gradient(circle at center, rgba(43, 11, 39, 0.64), rgba(6, 2, 8, 0.96));
+      backdrop-filter: blur(4px);
+      transition: opacity 0.75s ease, visibility 0.75s ease;
+    }
+
+    .gate.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .unlock {
+      min-width: 260px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 171, 224, 0.78);
+      background: linear-gradient(130deg, rgba(255, 53, 159, 0.34), rgba(66, 14, 46, 0.68));
+      color: #ffe5f5;
+      font-family: "Pixelify Sans", sans-serif;
+      font-size: 24px;
+      letter-spacing: 0.2em;
+      padding: 13px 24px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .unlock:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    main {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 10;
+      opacity: 0;
+      transform: scale(1.04);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+      pointer-events: none;
+    }
+
+    body.unlocked main {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .title-wrap {
+      text-align: center;
+      padding: 18px 26px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(22, 6, 20, 0.58);
+      box-shadow: inset 0 0 18px rgba(255, 123, 203, 0.13), 0 0 24px rgba(255, 56, 159, 0.24);
+    }
+
+    h1 {
+      font-family: "Noto Sans SC", sans-serif;
+      font-size: clamp(42px, 10.4vw, 140px);
+      letter-spacing: 0.08em;
+      color: #ffe7f7;
+      text-shadow: 0 0 14px rgba(255, 160, 223, 0.78), 0 0 34px rgba(255, 36, 145, 0.88);
+      animation: glitch 2.8s infinite;
+      line-height: 1.06;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-family: "Pixelify Sans", sans-serif;
+      font-size: clamp(26px, 5.3vw, 66px);
+      letter-spacing: 0.22em;
+      color: #ffb8df;
+      text-shadow: 0 0 18px rgba(255, 67, 170, 0.72);
+    }
+
+    .music {
+      position: fixed;
+      right: 12px;
+      top: 12px;
+      z-index: 35;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 173, 225, 0.72);
+      background: rgba(41, 11, 31, 0.82);
+      color: #ffe2f3;
+      padding: 9px 13px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+    }
+
+    @keyframes glitch {
+      0%,
+      89%,
+      100% {
+        transform: translate(0, 0);
+      }
+      91% {
+        transform: translate(1px, -1px);
+      }
+      92% {
+        transform: translate(-1px, 1px);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .photo {
+        width: clamp(96px, 26vw, 150px);
+        border-radius: 10px;
+      }
+
+      .title-wrap {
+        width: 94vw;
       }
     }
   </style>
 </head>
 <body>
-  <div class="king-text">
-  <a href="https://user.qzone.qq.com/12255678?loginfrom=2" target="_blank" rel="noopener noreferrer">
-      <span>❤影子大王万岁万岁万万岁❤</span>
-    </a>
-  </div>
+  <div class="photo-layer" id="photoLayer"></div>
+  <div class="fx-layer" id="fxLayer"></div>
+  <div class="petal-layer" id="petalLayer"></div>
+
+  <button class="music" id="musicBtn" type="button">BGM: OFF</button>
+  <audio id="bgm" preload="auto" loop></audio>
+
+  <section class="gate" id="gate">
+    <button class="unlock" id="unlockBtn" type="button">???</button>
+  </section>
+
+  <main>
+    <div class="title-wrap">
+      <h1>影子熊大王万岁！</h1>
+      <h2>情人节快乐</h2>
+    </div>
+  </main>
 
   <script>
-    const phrases = ["❤影子万岁❤"];
+    const photoFiles = [
+      "pics/14f40507363160aba26fb66f9f92bace.jpg",
+      "pics/69c6d4b5fa1f1f46fcd1c53bc7b5cdff.jpg",
+      "pics/8f953dd3a404dfbc093570af320375bb.jpg",
+      "pics/90fbd97d30ab3951ab51e56c3dafc27f.jpg",
+      "pics/c875df2cba435af6d143044248e2f4be_720.jpg",
+      "pics/cb48e4da46568035bbb834a38539c008.jpg",
+      "pics/e8744095413ec928061ed8b84ac817e6.jpg"
+    ];
 
-    function randomColor() {
-      const hue = Math.floor(Math.random() * 360);
-      return `hsl(${hue}deg, 80%, 65%)`;
+    const slots = [
+      { left: "4%", top: "8%", r: "-8deg", d: "8.6s" },
+      { left: "22%", top: "72%", r: "6deg", d: "7.4s" },
+      { left: "42%", top: "6%", r: "-5deg", d: "8.2s" },
+      { left: "62%", top: "72%", r: "8deg", d: "9.1s" },
+      { left: "80%", top: "10%", r: "-7deg", d: "8.8s" },
+      { left: "75%", top: "46%", r: "5deg", d: "7.2s" },
+      { left: "10%", top: "43%", r: "-4deg", d: "8.9s" }
+    ];
+
+    const track = "music/《主播女孩重度依赖_NEEDY GIRL OVERDOSE》主题歌 KOTOKO演唱电波系歌曲《IN - 1.210215kotoko_fix_retro04(Av672842806,P1).mp3";
+
+    const photoLayer = document.getElementById("photoLayer");
+    const fxLayer = document.getElementById("fxLayer");
+    const petalLayer = document.getElementById("petalLayer");
+    const gate = document.getElementById("gate");
+    const unlockBtn = document.getElementById("unlockBtn");
+    const musicBtn = document.getElementById("musicBtn");
+    const bgm = document.getElementById("bgm");
+
+    let unlocked = false;
+
+    function buildFloatingPhotos() {
+      photoFiles.forEach((src, i) => {
+        const slot = slots[i % slots.length];
+        const frame = document.createElement("figure");
+        frame.className = "photo";
+        frame.style.left = slot.left;
+        frame.style.top = slot.top;
+        frame.style.setProperty("--r", slot.r);
+        frame.style.setProperty("--d", slot.d);
+
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = `photo-${i + 1}`;
+        img.addEventListener("error", () => frame.remove());
+
+        frame.appendChild(img);
+        photoLayer.appendChild(frame);
+      });
     }
 
-    function spawnFloatingText(x, y) {
-      const el = document.createElement("div");
-      el.textContent = phrases[Math.floor(Math.random() * phrases.length)];
-      el.className = "floating";
-      document.body.appendChild(el);
-
-      const rect = el.getBoundingClientRect();
-      el.style.left = `${x - rect.width / 2}px`;
-      el.style.top = `${y - rect.height / 2}px`;
-      el.style.color = randomColor();
-
-      el.addEventListener("animationend", () => el.remove());
+    function setMusicLabel() {
+      musicBtn.textContent = bgm.paused ? "BGM: OFF" : "BGM: ON";
     }
 
-    document.addEventListener("click", (event) => {
-      spawnFloatingText(event.clientX, event.clientY);
+    function playMusic() {
+      if (!bgm.src) {
+        bgm.src = encodeURI(track);
+      }
+      bgm.play().catch(() => {});
+      setMusicLabel();
+    }
+
+    function stopMusic() {
+      bgm.pause();
+      setMusicLabel();
+    }
+
+    function unlock() {
+      if (unlocked) return;
+      unlocked = true;
+      document.body.classList.add("unlocked");
+      gate.classList.add("hidden");
+      burst(innerWidth / 2, innerHeight / 2, 24);
+      playMusic();
+    }
+
+    function burst(x, y, n) {
+      for (let i = 0; i < n; i += 1) {
+        const spark = document.createElement("span");
+        spark.className = "spark";
+        spark.style.left = `${x + (Math.random() - 0.5) * 130}px`;
+        spark.style.top = `${y + (Math.random() - 0.5) * 130}px`;
+        spark.style.animationDelay = `${Math.random() * 0.16}s`;
+        fxLayer.appendChild(spark);
+        spark.addEventListener("animationend", () => spark.remove());
+      }
+    }
+
+    function spawnPetal() {
+      const p = document.createElement("span");
+      p.className = "petal";
+      p.textContent = Math.random() > 0.4 ? "❤" : "✦";
+      p.style.left = `${Math.random() * 100}vw`;
+      p.style.animationDuration = `${6 + Math.random() * 5}s`;
+      p.style.opacity = `${0.35 + Math.random() * 0.6}`;
+      petalLayer.appendChild(p);
+      p.addEventListener("animationend", () => p.remove());
+    }
+
+    let lastSpark = 0;
+    addEventListener("pointermove", (event) => {
+      const now = performance.now();
+      if (now - lastSpark < 36) return;
+      lastSpark = now;
+      burst(event.clientX, event.clientY, 2);
     });
+
+    unlockBtn.addEventListener("click", unlock);
+    musicBtn.addEventListener("click", () => {
+      if (bgm.paused) {
+        playMusic();
+      } else {
+        stopMusic();
+      }
+    });
+
+    buildFloatingPhotos();
+    setMusicLabel();
+    setInterval(spawnPetal, 290);
   </script>
 </body>
 </html>
-
