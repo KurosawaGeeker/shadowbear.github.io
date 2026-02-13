@@ -34,7 +34,7 @@
       font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
       color: var(--text);
       overflow: hidden;
-      cursor: url("pics/cursor-small.png") 16 16, auto;
+      cursor: url("pics/cursor-small.png") 16 16, pointer;
       background:
         radial-gradient(circle at 15% 8%, rgba(255, 98, 196, 0.3), transparent 34%),
         radial-gradient(circle at 84% 16%, rgba(255, 60, 150, 0.24), transparent 36%),
@@ -190,7 +190,7 @@
       letter-spacing: 0.2em;
       padding: 13px 24px;
       box-shadow: var(--shadow);
-      cursor: pointer;
+      cursor: url("pics/cursor-small.png") 16 16, pointer;
       transition: transform 0.2s ease;
     }
 
@@ -213,6 +213,42 @@
     body.unlocked main {
       opacity: 1;
       transform: scale(1);
+    }
+
+    .hero-stack {
+      width: min(96vw, 1080px);
+      display: grid;
+      gap: 10px;
+      justify-items: center;
+    }
+
+    .marquee {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(25, 7, 23, 0.72);
+      box-shadow: inset 0 0 12px rgba(255, 122, 200, 0.16);
+    }
+
+    .marquee p {
+      display: inline-block;
+      padding: 10px 0;
+      font-family: "Pixelify Sans", sans-serif;
+      font-size: clamp(12px, 2.1vw, 20px);
+      letter-spacing: 0.16em;
+      color: #ffcbe9;
+      animation: marquee 14s linear infinite;
+    }
+
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-50%);
+      }
     }
 
     .title-wrap {
@@ -256,7 +292,7 @@
       font-size: 12px;
       letter-spacing: 0.08em;
       box-shadow: var(--shadow);
-      cursor: pointer;
+      cursor: url("pics/cursor-small.png") 16 16, pointer;
     }
 
     @keyframes glitch {
@@ -298,9 +334,14 @@
   </section>
 
   <main>
-    <div class="title-wrap">
-      <h1>影子熊大王万岁！</h1>
-      <h2>情人节快乐</h2>
+    <div class="hero-stack">
+      <section class="marquee" aria-hidden="true">
+        <p>影子熊大王万岁！ · 情人节快乐 · 影子熊大王万岁！ · 情人节快乐 · 影子熊大王万岁！ · 情人节快乐 · 影子熊大王万岁！ · 情人节快乐 ·</p>
+      </section>
+      <div class="title-wrap">
+        <h1>影子熊大王万岁！</h1>
+        <h2>情人节快乐</h2>
+      </div>
     </div>
   </main>
 
@@ -312,7 +353,8 @@
       "pics/90fbd97d30ab3951ab51e56c3dafc27f.jpg",
       "pics/c875df2cba435af6d143044248e2f4be_720.jpg",
       "pics/cb48e4da46568035bbb834a38539c008.jpg",
-      "pics/e8744095413ec928061ed8b84ac817e6.jpg"
+      "pics/e8744095413ec928061ed8b84ac817e6.jpg",
+      "pics/e5479f87edace48a0704127367b341a4.jpg"
     ];
 
     const slots = [
@@ -322,7 +364,8 @@
       { left: "62%", top: "72%", r: "8deg", d: "9.1s" },
       { left: "80%", top: "10%", r: "-7deg", d: "8.8s" },
       { left: "75%", top: "46%", r: "5deg", d: "7.2s" },
-      { left: "10%", top: "43%", r: "-4deg", d: "8.9s" }
+      { left: "10%", top: "43%", r: "-4deg", d: "8.9s" },
+      { left: "88%", top: "64%", r: "-6deg", d: "7.7s" }
     ];
 
     const track = "music/《主播女孩重度依赖_NEEDY GIRL OVERDOSE》主题歌 KOTOKO演唱电波系歌曲《IN - 1.210215kotoko_fix_retro04(Av672842806,P1).mp3";
@@ -429,3 +472,4 @@
   </script>
 </body>
 </html>
+
