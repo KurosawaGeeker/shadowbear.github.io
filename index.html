@@ -369,14 +369,14 @@
 
   <script>
     const photoFiles = [
-      "pics/14f40507363160aba26fb66f9f92bace.jpg",
-      "pics/69c6d4b5fa1f1f46fcd1c53bc7b5cdff.jpg",
-      "pics/8f953dd3a404dfbc093570af320375bb.jpg",
-      "pics/90fbd97d30ab3951ab51e56c3dafc27f.jpg",
-      "pics/c875df2cba435af6d143044248e2f4be_720.jpg",
-      "pics/cb48e4da46568035bbb834a38539c008.jpg",
-      "pics/e8744095413ec928061ed8b84ac817e6.jpg",
-      "pics/e5479f87edace48a0704127367b341a4.jpg"
+      "pics/optimized/14f40507363160aba26fb66f9f92bace.webp",
+      "pics/optimized/69c6d4b5fa1f1f46fcd1c53bc7b5cdff.webp",
+      "pics/optimized/8f953dd3a404dfbc093570af320375bb.webp",
+      "pics/optimized/90fbd97d30ab3951ab51e56c3dafc27f.webp",
+      "pics/optimized/c875df2cba435af6d143044248e2f4be_720.webp",
+      "pics/optimized/cb48e4da46568035bbb834a38539c008.webp",
+      "pics/optimized/e8744095413ec928061ed8b84ac817e6.webp",
+      "pics/optimized/e5479f87edace48a0704127367b341a4.webp"
     ];
 
     const slots = [
@@ -402,8 +402,12 @@
     const bgm = document.getElementById("bgm");
 
     let unlocked = false;
+    let photosBuilt = false;
 
     function buildFloatingPhotos() {
+      if (photosBuilt) return;
+      photosBuilt = true;
+
       photoFiles.forEach((src, i) => {
         const slot = slots[i % slots.length];
         const frame = document.createElement("figure");
@@ -416,6 +420,7 @@
         const img = document.createElement("img");
         img.src = src;
         img.alt = `photo-${i + 1}`;
+        img.decoding = "async";
         img.addEventListener("error", () => frame.remove());
 
         frame.appendChild(img);
@@ -445,6 +450,7 @@
       unlocked = true;
       document.body.classList.add("unlocked");
       gate.classList.add("hidden");
+      buildFloatingPhotos();
       burst(innerWidth / 2, innerHeight / 2, 24);
       playMusic();
     }
@@ -500,7 +506,6 @@
       }
     });
 
-    buildFloatingPhotos();
     setMusicLabel();
     setInterval(spawnPetal, 290);
     setInterval(spawnCross, 560);
